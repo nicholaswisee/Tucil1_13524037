@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'com.nicholas.queens'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "21" // Ensure this matches your JDK
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing' ]
+}
+
+dependencies {
+    // For handling Image Input (Bonus) 
+    implementation 'org.imgscalr:imgscalr-lib:4.2' 
+    
+    // Testing (Optional)
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
+application {
+    mainClass = 'com.nicholas.queens.Main'
+}
+
+// Task to move the JAR to the /bin folder as required 
+tasks.register('copyToBin', Copy) {
+    from layout.buildDirectory.dir("libs")
+    into "bin"
+    include "*.jar"
+}
+build.dependsOn copyToBin
