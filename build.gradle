@@ -4,34 +4,64 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
-group = 'com.nicholas.queens'
+group = 'queens'
 version = '1.0'
 
 repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 javafx {
-    version = "21" // Ensure this matches your JDK
+    version = "21"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.swing' ]
 }
 
 dependencies {
-    // For handling Image Input (Bonus) 
-    implementation 'org.imgscalr:imgscalr-lib:4.2' 
+    // Image processing libraries for bonus features
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
     
     // Testing (Optional)
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 application {
-    mainClass = 'com.nicholas.queens.Main'
+    mainClass = 'queens.Main'
 }
 
-// Task to move the JAR to the /bin folder as required 
+// Configure JAR to include all dependencies (fat JAR)
+jar {
+    archiveBaseName.set('Tucil1_13524037')
+    archiveVersion.set('1.0')
+    manifest {
+        attributes(
+            'Main-Class': 'queens.Main'
+        )
+    }
+    // Include all runtime dependencies
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Task to copy JAR to the /bin folder as required 
 tasks.register('copyToBin', Copy) {
+    dependsOn jar
     from layout.buildDirectory.dir("libs")
     into "bin"
     include "*.jar"
 }
+
 build.dependsOn copyToBin
+
+// Configure test task
+test {
+    useJUnitPlatform()
+}

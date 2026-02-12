@@ -11,4 +11,3 @@ plugins {
 }
 
 rootProject.name = 'Tucil1_13524037'
-include('app')
