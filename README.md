@@ -55,26 +55,31 @@ gradlew.bat build
 
 ## Running the Program
 
-### Using the Executable JAR
+### Step 1: Create an Input File
 
-Navigate to the project root directory and run:
+Create a `.txt` file with your board configuration. Each line represents a row, and letters (A-Z) represent regions.
+
+**Example:** Create `myboard.txt`
+
+```
+AABC
+ABBC
+DBBC
+DDDC
+```
+
+### Step 2: Run the Solver
+
+**Simple command:**
+
+```bash
+java -jar bin/Tucil1_13524037-1.0.jar myboard.txt
+```
+
+**Or without arguments (will prompt for filename):**
 
 ```bash
 java -jar bin/Tucil1_13524037-1.0.jar
-```
-
-**Note**: On some systems, you may need to explicitly specify JavaFX modules:
-
-```bash
-java --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.swing -jar bin/Tucil1_13524037-1.0.jar
-```
-
-However, with the Shadow JAR (fat JAR) configuration, this should not be necessary.
-
-### Alternatively, Use Gradle to Run
-
-```bash
-./gradlew run
 ```
 
 ## Project Structure
@@ -90,7 +95,9 @@ Tucil1_13524037/
 │       │       └── util/  # Utility classes
 │       └── resources/     # Resources (images, FXML, etc.)
 ├── bin/                   # Compiled executable JAR files
-├── test/                  # Test cases and solution examples
+├── test/                  # Test cases and solutions
+│   ├── inputs/           # Input test files
+│   └── outputs/          # Solution output files
 ├── doc/                   # Documentation (PDF report)
 ├── build.gradle           # Gradle build configuration
 ├── settings.gradle        # Gradle settings
