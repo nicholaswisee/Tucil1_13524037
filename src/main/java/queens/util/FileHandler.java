@@ -13,9 +13,15 @@ public class FileHandler {
 
   // Read board from file
   public static Board readBoardFromFile(String filename) throws IOException {
+    // If filename has no path separator, prepend test/inputs/
+    String filepath = filename;
+    if (!filename.contains("/") && !filename.contains("\\")) {
+      filepath = "test/inputs/" + filename;
+    }
+
     List<String> lines = new ArrayList<>();
 
-    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
       String line;
       while ((line = reader.readLine()) != null) {
         line = line.trim();
@@ -35,7 +41,12 @@ public class FileHandler {
   // Save solution to file
   public static void saveSolution(String filename, Board board, Solution solution)
       throws IOException {
-    String filepath = "/test/" + filename;
+    // If filename has no path separator, prepend test/outputs/
+    String filepath = filename;
+    if (!filename.contains("/") && !filename.contains("\\")) {
+      filepath = "test/outputs/" + filename;
+    }
+
     String formattedSolution = BoardFormatter.formatSolution(board, solution.getQueenPositions());
 
     try (PrintWriter writer = new PrintWriter(new FileWriter(filepath))) {
@@ -47,6 +58,11 @@ public class FileHandler {
 
   // Check if file exists
   public static boolean fileExists(String filename) {
-    return Files.exists(Paths.get(filename));
+    // If filename has no path separator, check in test/inputs/
+    String filepath = filename;
+    if (!filename.contains("/") && !filename.contains("\\")) {
+      filepath = "test/inputs/" + filename;
+    }
+    return Files.exists(Paths.get(filepath));
   }
 }

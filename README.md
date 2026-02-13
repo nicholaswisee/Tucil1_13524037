@@ -59,7 +59,7 @@ gradlew.bat build
 
 Create a `.txt` file with your board configuration. Each line represents a row, and letters (A-Z) represent regions.
 
-**Example:** Create `myboard.txt`
+**Example:** Create `test/inputs/myboard.txt`
 
 ```
 AABC
@@ -70,17 +70,26 @@ DDDC
 
 ### Step 2: Run the Solver
 
-**Simple command:**
+**Simple command (filename only):**
 
 ```bash
-java -jar bin/Tucil1_13524037-1.0.jar myboard.txt
+java -jar bin/Tucil1_13524037-1.0.jar medium.txt
 ```
 
-**Or without arguments (will prompt for filename):**
+**Or with full path:**
+
+```bash
+java -jar bin/Tucil1_13524037-1.0.jar test/inputs/myboard.txt
+```
+
+**Or without arguments (will prompt):**
 
 ```bash
 java -jar bin/Tucil1_13524037-1.0.jar
 ```
+
+> **Note:** If you provide just a filename (e.g., `medium.txt`), it automatically looks in `test/inputs/`.
+> When saving, if you provide just a filename, it automatically saves to `test/outputs/`.
 
 ## Project Structure
 
@@ -96,12 +105,12 @@ Tucil1_13524037/
 │       └── resources/     # Resources (images, FXML, etc.)
 ├── bin/                   # Compiled executable JAR files
 ├── test/                  # Test cases and solutions
-│   ├── inputs/           # Input test files
-│   └── outputs/          # Solution output files
+│   ├── inputs/            # Input test files
+│   └── outputs/           # Solution output files
 ├── doc/                   # Documentation (PDF report)
 ├── build.gradle           # Gradle build configuration
 ├── settings.gradle        # Gradle settings
-└── README.md             # This file
+└── README.md
 ```
 
 ## Author

@@ -1,0 +1,7 @@
+AA#C
+#BBC
+DBB#
+D#DC
+
+Time to solve: 1 ms
+Total cases generated: 142 kasus

@@ -52,6 +52,6 @@ public class BoardFormatter {
   // Save solution
   public static boolean promptSave() {
     System.out.print("Apakah Anda ingin menyimpan solusi? (Ya/Tidak): ");
-    return true; // For now, just return true - can enhance with Scanner later
+    return true;
   }
 }
