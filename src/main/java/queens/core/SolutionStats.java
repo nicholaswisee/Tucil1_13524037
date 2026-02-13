@@ -6,9 +6,9 @@ public class SolutionStats {
   private long solvingTime;
   private boolean solutionFound;
 
-  public SolutionStats(int cases, long solvingTime, boolean solutionFound) {
-    this.cases = cases;
+  public SolutionStats(long solvingTime, int cases, boolean solutionFound) {
     this.solvingTime = solvingTime;
+    this.cases = cases;
     this.solutionFound = solutionFound;
   }
 
