@@ -2,6 +2,9 @@
 .gradle
 build/
 
+bin/*
+!bin/*.jar
+
 .settings/
 .classpath
 .project
