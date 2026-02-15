@@ -3,6 +3,7 @@ package queens;
 import queens.core.Board;
 import queens.core.Solution;
 import queens.core.Solver;
+import queens.gui.GUI;
 import queens.util.BoardFormatter;
 import queens.util.FileHandler;
 
@@ -11,6 +12,14 @@ import java.util.Scanner;
 public class Main {
 
   public static void main(String[] args) {
+    // Check for GUI mode
+    if (args.length == 0 || (args.length > 0 && args[0].equals("--gui"))) {
+      System.out.println("Launching GUI mode...");
+      GUI.main(args);
+      return;
+    }
+
+    // CLI mode
     Scanner scanner = new Scanner(System.in);
 
     try {
