@@ -31,10 +31,9 @@ public class Position {
     }
 
     // Same diagonal (absolute difference of rows equals absolute difference columns)
-    if (Math.abs(this.row - other.row) == Math.abs(this.col - other.col)) {
+    if (Math.abs(this.row - other.row) == 1 && Math.abs(this.col - other.col) == 1) {
       return true;
     }
-
     return false;
   }
 

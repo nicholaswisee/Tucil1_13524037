@@ -38,7 +38,7 @@ public class SolutionStats {
 
   @Override
   public String toString() {
-    return String.format("Time to solve: %d ms\n Total cases generated: %d kasus", solvingTime,
+    return String.format("Time to solve: %d ms\n Total cases generated: %d cases", solvingTime,
         cases);
   }
 
