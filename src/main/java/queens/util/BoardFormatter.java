@@ -1,12 +1,10 @@
 package queens.util;
 
-import queens.core.Board;
-import queens.core.Position;
-import queens.core.Solution;
+import queens.model.Board;
+import queens.model.Position;
+import queens.model.Solution;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class BoardFormatter {
 
@@ -15,7 +13,6 @@ public class BoardFormatter {
     char[][] grid = board.getRegionGrid();
 
     // Mark queen positions with '#'
-    Set<Position> queenSet = new HashSet<>(queens);
     for (Position queen : queens) {
       grid[queen.getRow()][queen.getCol()] = '#';
     }
