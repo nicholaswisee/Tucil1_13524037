@@ -1,12 +1,10 @@
-# LinkedIn Queens Solver
-
-**Tucil1_13524037** - Brute Force N-Queens Solution
+# Brute-Force LinkedIn Queens Solver
 
 A pure brute-force solver for the LinkedIn Queens puzzle that tests all possible queen placements to find valid configurations.
 
-## Program Description
+The brute-force approach used involves neither heuristics nor optimizations, and works purely by generating all valid placements of Queens.
 
-This program solves the LinkedIn Queens puzzle using a **pure brute-force algorithm** without any heuristics or optimizations.
+A Model-View-Controller (MVC) architecture is used to modularize a clean, modular approach to structure the project, using Gradle as the package manager + builder.
 
 ## Requirements
 
@@ -30,6 +28,7 @@ This program solves the LinkedIn Queens puzzle using a **pure brute-force algori
    Should display Java version 21 or higher.
 
 2. **Clone or extract this repository**:
+
    ```bash
    git clone <repository-url>
    cd Tucil1_13524037
@@ -95,21 +94,27 @@ java -jar bin/Tucil1_13524037-1.0.jar
 
 ```
 Tucil1_13524037/
-├── src/                    # Source code directory
+├── src/
 │   └── main/
-│       ├── java/          # Java source files
-│       │   └── queens/    # Main package
-│       │       ├── core/  # Core solving logic
-│       │       ├── gui/   # GUI components
-│       │       └── util/  # Utility classes
-│       └── resources/     # Resources (images, FXML, etc.)
-├── bin/                   # Compiled executable JAR files
-├── test/                  # Test cases and solutions
-│   ├── inputs/            # Input test files
-│   └── outputs/           # Solution output files
-├── doc/                   # Documentation (PDF report)
-├── build.gradle           # Gradle build configuration
-├── settings.gradle        # Gradle settings
+│       ├── java/
+│       │   └── queens/
+│       │       ├── Main.java          # Application entry point
+│       │       ├── model/             # Model Layer (Domain entities)
+│       │       ├── view/              # View Layer (UI components)
+│       │       ├── controller/        # Controller Layer
+│       │       ├── service/           # Service Layer
+│       │       └── util/              # Utility classes
+│       └── resources/       # Resources (FXML layouts)
+│           └── queens/gui/
+│               └── MainView.fxml
+├── bin/                     # Compiled executable JAR files
+├── test/                    # Test cases and solutions
+│   ├── inputs/              # Input test files
+│   └── outputs/             # Solution output files
+├── doc/                     # Documentation
+├── build.gradle             # Gradle build configuration
+├── settings.gradle          # Gradle settings
+├── MVC_ARCHITECTURE.md      # MVC architecture documentation
 └── README.md
 ```
 
