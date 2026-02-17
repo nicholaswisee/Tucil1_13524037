@@ -116,12 +116,6 @@ public class BoardCanvas extends Canvas {
         gc.setLineWidth(1.5);
         gc.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
 
-        // Draw region letter
-        gc.setFill(Color.BLACK);
-        gc.setFont(new Font("Arial", 14));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setTextBaseline(VPos.TOP);
-        gc.fillText(String.valueOf(region), x + CELL_SIZE / 2, y + 5);
       }
     }
 
@@ -145,15 +139,15 @@ public class BoardCanvas extends Canvas {
   }
 
   private void drawQueens(GraphicsContext gc, List<Position> queens) {
-    gc.setFill(Color.RED);
-    gc.setFont(new Font("Arial", 36));
+    gc.setFill(Color.BLACK);
+    gc.setFont(new Font("Arial", 32));
     gc.setTextAlign(TextAlignment.CENTER);
     gc.setTextBaseline(VPos.CENTER);
 
     for (Position queen : queens) {
       double x = MARGIN + queen.getCol() * CELL_SIZE + CELL_SIZE / 2;
       double y = MARGIN + queen.getRow() * CELL_SIZE + CELL_SIZE / 2;
-      gc.fillText("♛", x, y);
+      gc.fillText("Q", x, y);
     }
   }
 }

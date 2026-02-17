@@ -35,7 +35,7 @@ public class SolverService {
 
       // Progress callback for GUI updates (every 10,000 iterations)
       if (progressCallback != null && cases % 10000 == 0) {
-        progressCallback.onProgress(cases);
+        progressCallback.onProgress(cases, solution);
       }
 
       // Progress logging for large puzzles

@@ -92,15 +92,31 @@ public class MainController {
 
   private void loadAndDisplayBoard() {
     try {
-      // Use service to load board (Model)
       currentBoard = fileService.readBoardFromFile(selectedFile.getAbsolutePath());
+
+      // Board validation (n x n)
+      char[][] regionGrid = currentBoard.getRegionGrid();
+      int rows = regionGrid.length;
+      for (int i = 0; i < rows; i++) {
+        if (regionGrid[i].length != rows) {
+          throw new IllegalArgumentException(
+              "Invalid board dimensions: Board must be NxN. Row " + i + " has " +
+                  regionGrid[i].length + " columns, expected " + rows);
+        }
+      }
 
       System.out
           .println("DEBUG: Board loaded: " + currentBoard.getSize() + "x" + currentBoard.getSize());
       System.out.println("DEBUG: Calling boardCanvas.setBoard()...");
 
-      // Update view
+      // Reset UI state
       boardCanvas.setBoard(currentBoard);
+      iterationsLabel.setText("0");
+      timerLabel.setText("0 ms");
+
+      solveButton.setText("Solve Puzzle");
+      solveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px 20px;");
+      solveButton.setDisable(false);
 
       System.out.println("DEBUG: Canvas size after setBoard: " + boardCanvas.getWidth() + "x"
           + boardCanvas.getHeight());
@@ -108,14 +124,20 @@ public class MainController {
 
       fileLabel.setText("File: " + selectedFile.getName() + "\n(" + currentBoard.getSize() + "x"
           + currentBoard.getSize() + " board)");
-      solveButton.setDisable(false);
 
       System.out.println("File selected: " + selectedFile.getAbsolutePath());
 
+    } catch (IllegalArgumentException e) {
+      System.err.println("Validation error: " + e.getMessage());
+      fileLabel.setText("Invalid file!\n" + e.getMessage());
+      solveButton.setDisable(true);
+      currentBoard = null;
     } catch (Exception e) {
       System.err.println("Error loading board: " + e.getMessage());
       e.printStackTrace();
       fileLabel.setText("Error loading file!");
+      solveButton.setDisable(true);
+      currentBoard = null;
     }
   }
 
@@ -137,13 +159,15 @@ public class MainController {
     // Disable solve button during solving
     solveButton.setDisable(true);
 
-    // Create a Task to run the solver in a background thread
+    // Run solver in background thread
     final long startTime = System.currentTimeMillis();
+    final java.util.concurrent.atomic.AtomicReference<java.util.List<queens.model.Position>> latestPositions = new java.util.concurrent.atomic.AtomicReference<>();
+
     javafx.concurrent.Task<Solution> solverTask = new javafx.concurrent.Task<Solution>() {
       @Override
       protected Solution call() throws Exception {
-        // Solve with progress callback that updates GUI on JavaFX thread
-        return solverService.solve(currentBoard, (iterations) -> {
+        return solverService.solve(currentBoard, (iterations, positions) -> {
+          latestPositions.set(positions);
           javafx.application.Platform.runLater(() -> {
             iterationsLabel.setText(String.valueOf(iterations));
           });
@@ -151,11 +175,19 @@ public class MainController {
       }
     };
 
-    // Create a Timeline to update the timer every 100ms
+    // Update timer and board every 100ms
     final javafx.animation.Timeline timeline = new javafx.animation.Timeline(
         new javafx.animation.KeyFrame(javafx.util.Duration.millis(100), event -> {
           long elapsedTime = System.currentTimeMillis() - startTime;
           timerLabel.setText(elapsedTime + " ms");
+
+          // Update board with latest candidate positions (throttled to 100ms)
+          java.util.List<queens.model.Position> positions = latestPositions.get();
+          if (positions != null) {
+            queens.model.SolutionStats tempStats = new queens.model.SolutionStats(0, 0, false);
+            queens.model.Solution tempSolution = new queens.model.Solution(positions, tempStats);
+            boardCanvas.setSolution(tempSolution);
+          }
         }));
     timeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
     timeline.play();
