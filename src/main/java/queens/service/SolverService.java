@@ -13,6 +13,10 @@ import java.util.Map;
 public class SolverService {
 
   public Solution solve(Board board) {
+    return solve(board, null);
+  }
+
+  public Solution solve(Board board, ProgressCallback progressCallback) {
     int size = board.getSize();
     int cases = 0;
     long startTime = System.currentTimeMillis();
@@ -28,6 +32,11 @@ public class SolverService {
       }
 
       cases++;
+
+      // Progress callback for GUI updates (every 10,000 iterations)
+      if (progressCallback != null && cases % 10000 == 0) {
+        progressCallback.onProgress(cases);
+      }
 
       // Progress logging for large puzzles
       if (cases % 1000000 == 0) {
