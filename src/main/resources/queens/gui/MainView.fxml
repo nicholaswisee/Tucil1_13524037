@@ -20,8 +20,11 @@
                 <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
             </padding>
             
-            <Label text="LinkedIn&#10;Queens&#10;Solver" 
-                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-alignment: center;"/>
+            <Label text="LinkedIn Queens Minigame" 
+                   style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-alignment: center;"/>
+
+            <Label text="Brute-Force Solver" 
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-alignment: center;"/>
             
             <Label fx:id="fileLabel" text="No file selected" 
                    style="-fx-font-size: 14px; -fx-padding: 10px;" wrapText="true"/>

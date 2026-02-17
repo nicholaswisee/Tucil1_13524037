@@ -94,20 +94,30 @@ public class MainController {
     try {
       currentBoard = fileService.readBoardFromFile(selectedFile.getAbsolutePath());
 
-      // Board validation (n x n)
+      // Validate board (NxN)
       char[][] regionGrid = currentBoard.getRegionGrid();
       int rows = regionGrid.length;
       for (int i = 0; i < rows; i++) {
         if (regionGrid[i].length != rows) {
           throw new IllegalArgumentException(
-              "Invalid board dimensions: Board must be NxN. Row " + i + " has " +
-                  regionGrid[i].length + " columns, expected " + rows);
+              "Invalid board dimensions: Board must be NxN");
+        }
+        // Check for null/empty characters (happens when input row is incomplete)
+        for (int j = 0; j < rows; j++) {
+          if (regionGrid[i][j] == '\0' || regionGrid[i][j] == ' ') {
+            throw new IllegalArgumentException(
+                "Invalid board: Row " + (i + 1) + " has incomplete data (missing character at column " + (j + 1) + ")");
+          }
         }
       }
 
-      System.out
-          .println("DEBUG: Board loaded: " + currentBoard.getSize() + "x" + currentBoard.getSize());
-      System.out.println("DEBUG: Calling boardCanvas.setBoard()...");
+      // Validate that number of regions equals N
+      int numRegions = currentBoard.getRegions().size();
+      if (numRegions != currentBoard.getSize()) {
+        throw new IllegalArgumentException(
+            "Invalid number of regions: Expected " + currentBoard.getSize() +
+                " regions, but found " + numRegions + " regions");
+      }
 
       // Reset UI state
       boardCanvas.setBoard(currentBoard);
@@ -118,8 +128,6 @@ public class MainController {
       solveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px 20px;");
       solveButton.setDisable(false);
 
-      System.out.println("DEBUG: Canvas size after setBoard: " + boardCanvas.getWidth() + "x"
-          + boardCanvas.getHeight());
       System.out.println("Board loaded: " + currentBoard.getSize() + "x" + currentBoard.getSize());
 
       fileLabel.setText("File: " + selectedFile.getName() + "\n(" + currentBoard.getSize() + "x"

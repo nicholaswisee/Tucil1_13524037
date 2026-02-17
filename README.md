@@ -2,7 +2,7 @@
 
 A pure brute-force solver for the LinkedIn Queens puzzle that tests all possible queen placements to find valid configurations.
 
-The brute-force approach used involves neither heuristics nor optimizations, and works purely by generating all valid placements of Queens.
+The brute-force approach used involves neither heuristics nor optimizations, and works purely by generating all possible placements of Queens, limited to only 1 Queen per row.
 
 A Model-View-Controller (MVC) architecture is used to modularize a clean, modular approach to structure the project, using Gradle as the package manager + builder.
 

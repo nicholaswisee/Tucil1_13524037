@@ -147,7 +147,7 @@ public class BoardCanvas extends Canvas {
     for (Position queen : queens) {
       double x = MARGIN + queen.getCol() * CELL_SIZE + CELL_SIZE / 2;
       double y = MARGIN + queen.getRow() * CELL_SIZE + CELL_SIZE / 2;
-      gc.fillText("Q", x, y);
+      gc.fillText("♛", x, y);
     }
   }
 }
