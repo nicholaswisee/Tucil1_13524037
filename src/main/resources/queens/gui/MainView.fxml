@@ -37,6 +37,17 @@
                     onAction="#handleSolve" disable="true" maxWidth="Infinity"
                     style="-fx-font-size: 14px; -fx-padding: 10px 20px;"/>
             
+            <HBox spacing="10.0">
+                <Button fx:id="exportTxtButton" text="Export .txt"
+                        onAction="#handleExportTxt" disable="true"
+                        maxWidth="Infinity" HBox.hgrow="ALWAYS"
+                        style="-fx-font-size: 13px; -fx-padding: 10px 8px;"/>
+                <Button fx:id="exportImgButton" text="Export Image"
+                        onAction="#handleExportImage" disable="true"
+                        maxWidth="Infinity" HBox.hgrow="ALWAYS"
+                        style="-fx-font-size: 13px; -fx-padding: 10px 8px;"/>
+            </HBox>
+            
             <Separator prefWidth="200"/>
             
             <VBox alignment="TOP_LEFT" spacing="10.0">

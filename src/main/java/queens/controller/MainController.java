@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import queens.model.Board;
@@ -13,7 +14,10 @@ import queens.service.SolverService;
 import queens.util.BoardFormatter;
 import queens.view.BoardCanvas;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class MainController {
 
@@ -27,6 +31,12 @@ public class MainController {
   private Button solveButton;
 
   @FXML
+  private Button exportTxtButton;
+
+  @FXML
+  private Button exportImgButton;
+
+  @FXML
   private ScrollPane boardScrollPane;
 
   @FXML
@@ -38,6 +48,7 @@ public class MainController {
   private BoardCanvas boardCanvas;
   private File selectedFile;
   private Board currentBoard;
+  private Solution currentSolution;
   private Stage stage;
 
   // Service layer dependencies
@@ -120,6 +131,7 @@ public class MainController {
       }
 
       // Reset UI state
+      currentSolution = null;
       boardCanvas.setBoard(currentBoard);
       iterationsLabel.setText("0");
       timerLabel.setText("0 ms");
@@ -127,6 +139,8 @@ public class MainController {
       solveButton.setText("Solve Puzzle");
       solveButton.setStyle("-fx-font-size: 14px; -fx-padding: 10px 20px;");
       solveButton.setDisable(false);
+      exportTxtButton.setDisable(true);
+      exportImgButton.setDisable(true);
 
       System.out.println("Board loaded: " + currentBoard.getSize() + "x" + currentBoard.getSize());
 
@@ -212,6 +226,7 @@ public class MainController {
       if (solution != null) {
         System.out.println("\n✓ Solution found in " + finalElapsedTime + "ms");
 
+        currentSolution = solution;
         boardCanvas.setSolution(solution);
         iterationsLabel.setText(String.valueOf(solution.getStats().getCases()));
         timerLabel.setText(finalElapsedTime + " ms");
@@ -220,6 +235,8 @@ public class MainController {
         solveButton.setText("Solved!");
         solveButton.setStyle(
             "-fx-font-size: 14px; -fx-padding: 10px 20px; -fx-background-color: #90EE90;");
+        exportTxtButton.setDisable(false);
+        exportImgButton.setDisable(false);
       } else {
         System.out.println("\n✗ No solution found");
 
@@ -251,5 +268,89 @@ public class MainController {
     Thread solverThread = new Thread(solverTask);
     solverThread.setDaemon(true);
     solverThread.start();
+  }
+
+  @FXML
+  private void handleExportTxt() {
+    if (currentBoard == null || currentSolution == null)
+      return;
+
+    File outputDir = new File("test/outputs");
+    outputDir.mkdirs();
+
+    String baseName = (selectedFile != null)
+        ? selectedFile.getName().replaceFirst("[.][^.]+$", "")
+        : "board";
+    File outputFile = new File(outputDir, "output_" + baseName + ".txt");
+
+    try {
+      fileService.saveSolution(outputFile.getAbsolutePath(), currentBoard, currentSolution);
+      System.out.println("Text exported to: " + outputFile.getAbsolutePath());
+      exportTxtButton.setText("Exported!");
+      exportTxtButton.setStyle("-fx-font-size: 13px; -fx-padding: 10px 8px; -fx-background-color: #90EE90;");
+      javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+          javafx.util.Duration.seconds(2));
+      pause.setOnFinished(e -> {
+        exportTxtButton.setText("Export .txt");
+        exportTxtButton.setStyle("-fx-font-size: 13px; -fx-padding: 10px 8px;");
+      });
+      pause.play();
+    } catch (IOException e) {
+      System.err.println("Failed to export text: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void handleExportImage() {
+    if (boardCanvas == null)
+      return;
+
+    // Snapshot the canvas
+    WritableImage writableImage = boardCanvas.snapshot(null, null);
+
+    // Convert to BufferedImage for ImageIO
+    int width = (int) writableImage.getWidth();
+    int height = (int) writableImage.getHeight();
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        javafx.scene.paint.Color fxColor = writableImage.getPixelReader().getColor(x, y);
+        int r = (int) (fxColor.getRed() * 255);
+        int g = (int) (fxColor.getGreen() * 255);
+        int b = (int) (fxColor.getBlue() * 255);
+        int a = (int) (fxColor.getOpacity() * 255);
+        bufferedImage.setRGB(x, y, (a << 24) | (r << 16) | (g << 8) | b);
+      }
+    }
+
+    // Ensure output directory exists
+    File outputDir = new File("test/outputs");
+    outputDir.mkdirs();
+
+    // Generate filename
+    String baseName = (selectedFile != null)
+        ? selectedFile.getName().replaceFirst("[.][^.]+$", "")
+        : "board";
+    File outputFile = new File(outputDir, "output_" + baseName + ".png");
+
+    try {
+      ImageIO.write(bufferedImage, "PNG", outputFile);
+      System.out.println("Image exported to: " + outputFile.getAbsolutePath());
+      exportImgButton.setText("Exported!");
+      exportImgButton.setStyle("-fx-font-size: 13px; -fx-padding: 10px 8px; -fx-background-color: #90EE90;");
+
+      // Reset button text after 2 seconds
+      javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(
+          javafx.util.Duration.seconds(2));
+      pause.setOnFinished(e -> {
+        exportImgButton.setText("Export Image");
+        exportImgButton.setStyle("-fx-font-size: 13px; -fx-padding: 10px 8px;");
+      });
+      pause.play();
+    } catch (IOException e) {
+      System.err.println("Failed to export image: " + e.getMessage());
+      e.printStackTrace();
+    }
   }
 }
