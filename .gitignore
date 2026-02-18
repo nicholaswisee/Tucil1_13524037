@@ -2,6 +2,14 @@
 .gradle
 build/
 
+*.log
+*.fls
+*.fdb_latexmk
+*.aux
+*.toc
+*.synctex.gz
+*.out
+
 bin/*
 !bin/*.jar
 
@@ -9,4 +17,3 @@ bin/*
 .classpath
 .project
 
-*.log

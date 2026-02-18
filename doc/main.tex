@@ -1,0 +1,963 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Geometry & spacing ──────────────────────────────────────
+\usepackage[margin=2.5cm]{geometry}
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0pt}
+
+% ── Encoding & language ─────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Swap the two lines below to switch language:
+% \usepackage[english]{babel}          
+\usepackage[indonesian]{babel}     
+
+% ── Font ────────────────────────────────────────────────────
+\usepackage{lmodern}
+
+% ── Math ────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+
+% ── Graphics & figures ──────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ── Tables ──────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+
+% ── Lists ───────────────────────────────────────────────────
+\usepackage{enumitem}
+
+% ── Code listings ───────────────────────────────────────────
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codeframe}{RGB}{200,200,200}
+\definecolor{codekw}{RGB}{0,0,180}
+\definecolor{codecomment}{RGB}{60,128,49}
+\definecolor{codestring}{RGB}{163,21,21}
+
+\lstdefinestyle{default}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=2,
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{codeframe},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  xleftmargin=2.5em,
+  framexleftmargin=2em,
+  keywordstyle=\color{codekw}\bfseries,
+  commentstyle=\color{codecomment}\itshape,
+  stringstyle=\color{codestring},
+}
+% Language-specific styles — add more as needed
+\lstdefinestyle{go}{style=default, language=Python}    % closest builtin
+\lstdefinestyle{python}{style=default, language=Python}
+\lstdefinestyle{java}{style=default, language=Java}
+\lstdefinestyle{cpp}{style=default, language=C++}
+\lstdefinestyle{bash}{style=default, language=bash}
+
+\lstset{style=default}   % global default
+
+% ── Boxes (for tips / callouts) ──────────────────────────────
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+
+\newtcolorbox{infobox}[1][Note]{
+  colback=blue!5!white, colframe=blue!50!black,
+  fonttitle=\bfseries, title=#1,
+  breakable
+}
+\newtcolorbox{warnbox}[1][Warning]{
+  colback=orange!10!white, colframe=orange!80!black,
+  fonttitle=\bfseries, title=#1,
+  breakable
+}
+
+% ── Hyperlinks ──────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=black}
+
+% ── SI units ────────────────────────────────────────────────
+\usepackage{siunitx}
+
+% ── Header / Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\CourseCode{} -- \CourseName}
+\rhead{\thepage}
+
+% ── First-line indent on all sections ───────────────────────
+\usepackage{indentfirst}
+
+\newcommand{\CourseCode}{IF2211}
+\newcommand{\CourseName}{Strategi Algoritma}
+\newcommand{\AssignmentTitle}{}
+\newcommand{\AssignmentSubtitle}{Penyelesaian Permainan Queens Linkedin}
+\newcommand{\Semester}{Semester II / 2025--2026}
+
+% Team / group
+\newcommand{\GroupName}{Nicholas Wise Saragih Sumbayak}
+\newcommand{\MemberA}{Teknik Informatika}
+\newcommand{\MemberB}{13524037}
+\newcommand{\MemberC}{}
+% Add \MemberD etc. if needed
+
+% Institution
+\newcommand{\Lab}{Laboratorium Ilmu dan Rekayasa Komputasi}
+\newcommand{\Program}{Teknik Informatika}
+\newcommand{\Faculty}{Sekolah Teknik Elektro dan Informatika}
+\newcommand{\University}{Institut Teknologi Bandung}
+
+% Repository / deployment links (used in Appendix)
+\newcommand{\RepoURL}{https://github.com/your-org/your-repo}
+\newcommand{\DeployURL}{https://your-deployment-url.example.com}
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{center}
+    \vspace*{1cm}
+    {\Huge \textbf{Laporan Tugas Kecil 1}}\\[0.4cm]
+    {\Large \textsc{\CourseCode{} \CourseName}}\\[0.2cm]
+    {\large \textsc{\AssignmentSubtitle}}\\[0.2cm]
+    {\large \textsc{\Semester}}\\[2cm]
+
+    % ── Replace with your own logo / cover image ─────────────
+    \includegraphics[height=8cm]{assets/logo-itb.png}\\[2cm]
+
+    {\large \textbf{Disusun oleh:}}\\[0.3cm]
+    {\large
+      \textbf{\GroupName}\\[0.25cm]
+      \textbf{\MemberA}\\[0.25cm]
+      \textbf{\MemberB}\\[0.25cm]
+      \MemberC\\
+    }
+
+    \vfill
+
+    {\large \textsc{\Lab}}\\[0.15cm]
+    {\large \textsc{Program Studi \Program}}\\[0.15cm]
+    {\large \textsc{\Faculty}}\\[0.15cm]
+    {\large \textsc{\University}}\\
+  \end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Pendahuluan}
+
+Queens adalah gim logika yang tersedia pada situs jejaring profesional LinkedIn. Tujuan dari gim ini
+adalah menempatkan queen pada sebuah papan persegi berwarna sehingga terdapat hanya satu queen pada
+tiap baris, kolom, dan daerah warna. Selain itu, satu queen tidak dapat ditempatkan bersebelahan dengan
+queen lainnya, termasuk secara diagonal.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{assets/queens-grid.png}
+  \caption{Contoh papan permainan LinkedIn Queens}
+  \label{fig:queens-board}
+\end{figure}
+
+Tujuan dari Tugas Kecil 1 ini adalah untuk membuat program yang dapat menemukan satu solusi penempatan queen pada suatu
+papan berwarna yang diberikan, atau menampilkan bahwa tidak ada solusi yang valid. Program
+melakukan pencarian solusi menggunakan algoritma \textit{brute force}.
+
+\section{Dasar Teori}
+
+\subsection{Algoritma \textit{Brute Force}}
+
+\subsubsection{Definisi \textit{Brute Force}}
+
+Algoritma \textit{brute force} adalah algoritma yang menyelesaikan sebuah
+masalah secara lempang (\textit{straightforward}). Pada dasarnya , algoritma
+\textit{brute-force} menghasilkan sebuah solusi melalui langkah-langkah yang
+sederhana, langung, dan jelas. Algoritma ini menjamin menemukan solusi jika 
+solusi tersebut ada, namun memiliki kompleksitas waktu yang tinggi karena harus mengeksplorasi seluruh ruang pencarian.
+
+Karakteristik algoritma \textit{brute force} antara lain:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Tidak efisien/sangkil} karena membutuhkan tenaga komputasi yang besar dan
+    waktu yang lama.
+  \item \textbf{Deterministik}, yang berarti selalu menghasilkan hasil yang sama
+    untuk input yang sama.
+  \item \textbf{Implementasi yang sederhana}, sehingga mudah dipahami dan
+    diimplementasikan.
+\end{itemize}
+
+\subsubsection{Algoritma \textit{Heuristic Search}}
+
+Algoritma \textit{Heuristic Search} termasuk dalam kategori algoritma
+\textit{brute-force}. Cara kerja \textit{heuristic search} sangat lempang
+(seperti \textit{brute-force} pada umumnya): Mencoba semua kemungkinan solusi
+hingga menemukan solusi yang benar. Umumnya, algoritma ini digunakan untuk
+menyelesaikan permasalahan dalam lingkup kombinatorika, yang melibatkan solusi
+berbentuk sebuah permutasi, kombinasi, atau himpunan.
+
+Inti dari \textit{exhaustic search} dapat dibagi menjadi tiga langkah, yaitu:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Enumerasi} \textit{list} setiap kemungkinan solusi,
+  \item \textbf{Evaluasi} semua kemungkinan solusi masing-masing,
+  \item \textbf{Simpan solusi terbaik} selama keberjalanan \textit{search}, dan
+  \item Tentukan solusi terbaik (\textbf{\textit{the winner}}).  
+\end{enumerate}
+
+\subsubsection{Teknik Heuristik}
+
+Algoritma \textit{brute-force} seperti \textit{heuristic search} dapat
+ditingkatkan efisiensinya dengan mengeliminasi calon-calon solusi yang belum
+dihasilkan sepenuhnya namun dapat dipastikan salah. Salah satu metode dalam
+menentukan calon solusi non-valid tersebut adalah menggunakan fungsi heuristik.
+
+Heuristik merupakan teknik yang dirancang untuk memecahkan persoalan dengan mengabaikan
+apakah teknik tersebut terbukti benar secara matematis. Eliminasi kasus oleh
+heuristik menggunakan 2 dasar utama, yaitu \textbf{intuisi} yang didasari akal
+sehat/\textit{common sense} dan pembelajaran pada \textbf{pengalaman} dari
+solusi-solusi sebelumnya.
+
+Perlu ditekankan bahwa heuristik berbeda dengan algoritma. Algoritma berbentuk
+langkah-langkah konkrit yang digunakan untuk menyelesaikan sebuah permasalahan,
+sedangkan heuristik adalah sebuah pedoman/\textit{rule of thumb} yang diikuti
+untuk menyederhanakan pembuatan keputusan.
+
+\subsection{Permainan LinkedIn Queens}
+
+\subsubsection{Perumusan Permasalahan}
+
+LinkedIn Queens adalah variasi dari permasalahan klasik \textit{N-Queens} dengan
+tambahan constraint berupa wilayah berwarna (\textit{colored regions}). Pada
+awal permainan, pemain diberikan papan persegi dengan ukuran $n \times n$, $n$
+buah daerah yang diberikan warna masing-masing, dan beberapa ratu yang telah
+diletakkan sebelumnya.
+
+Seperti permasalahan \textit{N-Queens}, tujuan akhir dari LinkedIn Queens adalah
+untuk menemukan susunan peletakan $n$ buah \textit{Queen} yang tepat sehingga
+tidak ada yang saling menyerang. Perbedaannya terletak pada \textit{constraint}
+yang menyatakan 2 atau lebih buah \textit{Queen} tidak saling menyerang:
+
+\begin{enumerate}[label=\arabic*., leftmargin=2em]
+  \item Tepat satu queen pada setiap \textbf{baris}.
+  \item Tepat satu queen pada setiap \textbf{kolom}.
+  \item Tepat satu queen pada setiap \textbf{warna}.
+  \item Queen tidak boleh \textbf{bersebelahan secara diagonal}.
+\end{enumerate}
+
+\subsubsection{Perumusan Solusi}
+
+Suatu konfigurasi penempatan queen dianggap valid jika memenuhi kondisi berikut:
+
+\begin{enumerate}[label=\arabic*., leftmargin=2em]
+  \item \textbf{Tidak ada serangan antar queen}
+  \begin{itemize}
+    \item Tidak ada dua queen pada kolom atau baris yang sama
+    \item Tidak ada dua queen yang bersebelahan secara diagonal (Jarak Manhattan = 1)
+  \end{itemize}
+  
+  \item \textbf{Satu queen per wilayah}
+
+  Setiap region warna memiliki tepat satu queen. Jika terdapat wilayah tanpa
+  queen atau wilayah dengan lebih dari satu queen, solusi tidak valid.
+\end{enumerate}
+
+Berdasarkan kedua kondisi di atas, fungsi validasi dapat dinyatakan sebagai:
+[
+\text{isValid}(S) = \neg\text{hasAttacks}(S) \land \text{onePerRegion}(S)
+\]
+dimana $S$ adalah himpunan posisi queen, \texttt{hasAttacks}$(S)$ mengecek adanya serangan antar queen, dan \texttt{onePerRegion}$(S)$ memverifikasi distribusi queen pada region.
+
+\section{Desain dan Implementasi}
+
+\subsection{Arsitektur dan Struktur Proyek}
+
+\subsubsection{Penerapan Pola MVC}
+
+Program ini menerapkan arsitektur \textbf{Model-View-Controller (MVC)} untuk
+memisahkan tanggung jawab setiap komponen. Struktur package dalam proyek
+mencerminkan pemisahan ini dengan jelas: package \texttt{model/} berisi
+representasi data dan logika domain, package \texttt{view/} menangani presentasi
+GUI, dan package \texttt{controller/} mengatur alur aplikasi dan koordinasi
+antar komponeb. Selain tiga komponen MVC utama, terdapat juga package
+\texttt{service/} yang mengenkapsulasi logika bisnis kompleks seperti algoritma
+solver dan operasi file I/O, serta package \texttt{util/} untuk fungsi-fungsi pembantu.
+
+\subsubsection{Build System dengan Gradle}
+
+Proyek ini menggunakan \textbf{Gradle} sebagai build automation tool dan
+dependency manager. Gradle dipilih karena kemampuannya mengelola dependensi
+secara deklaratif dan efisiensi dalam menjalankan perintah \textit{build}. File
+\texttt{build.gradle} mendefinisikan konfigurasi proyek termasuk versi Java yang
+digunakan (Java 21), dependensi eksternal seperti JavaFX, dan task untuk
+kompilasi serta distribusi. Gradle Wrapper (\texttt{gradlew} dan
+\texttt{gradlew.bat}) disertakan dalam repository sehingga pengguna tidak perlu
+menginstal Gradle secara manual.
+
+\subsubsection{Struktur Direktori}
+
+Repository diorganisir mengikuti konvensi standar Maven/Gradle untuk proyek
+Java. Direktori \texttt{src/main/java/} berisi seluruh source code aplikasi yang
+dikelompokkan dalam package \texttt{queens} dengan sub-package sesuai pola MVC.
+Direktori \texttt{src/main/resources/} menyimpan resource non-code seperti file
+FXML untuk layout GUI. Direktori \texttt{test/} berisi file-file test case
+dengan subdirektori \texttt{inputs/} untuk file input papan dan
+\texttt{outputs/} untuk menyimpan hasil solusi. Direktori \texttt{build/}
+(di-generate oleh Gradle) menyimpan hasil kompilasi.
+
+\subsection{Komponen Model}
+
+\subsubsection{Class Board}
+
+Class \texttt{Board} merepresentasikan papan permainan dengan region warna yang
+menjadi fondasi dari permasalahan Queens. Struktur data utama berupa matriks dua
+dimensi bertipe \texttt{char[][]} menyimpan karakter yang merepresentasikan
+region warna di setiap sel papan. Untuk efisiensi akses, class ini juga
+memelihara \texttt{Map<Character, List<Position>>} yang memetakan setiap region
+ke daftar posisi-posisinya.
+
+Board dapat dikonstruksi dari \texttt{List<String>}
+yang dibaca dari file input, dimana setiap string merepresentasikan satu baris
+papan. Class ini menyediakan method untuk mengakses wilayah pada posisi tertentu,
+mendapatkan daftar semua region unik, dan mengakses grid region secara
+keseluruhan, sehingga enkapsulasi representasi internal papan terjaga dengan baik.
+
+\begin{lstlisting}[style=java, caption={Board.java}]
+public class Board {
+  private final char[][] regions; // Grid region warna
+  private final int size; // Ukuran papan (n x n)
+  private final Map<Character, List<Position>> regionMap;
+  
+  public Board(List<String> lines) {
+  }
+  
+  public char getRegion(Position pos) {
+    return regions[pos.getRow()][pos.getCol()];
+  }
+  
+  public List<Character> getRegions() {
+    return new ArrayList<>(regionMap.keySet());
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Class Position}
+
+Class \texttt{Position} adalah value object immutable yang merepresentasikan
+koordinat pada papan dengan atribut \texttt{row} dan \texttt{col}. Selain
+sebagai container data, class ini juga mengenkapsulasi logika untuk mendeteksi
+serangan antar queen melalui method \texttt{attacks()}. Method ini
+mengimplementasikan aturan permainan dengan memeriksa apakah dua posisi berada
+pada kolom yang sama atau bersebelahan secara diagonal (jarak Manhattan = 1). 
+
+Serangan baris tidak perlu dicek karena algoritma brute force yang digunakan
+menjamin hanya satu queen per baris. Class ini mengoverride method
+\texttt{equals()} dan \texttt{hashCode()} untuk memastikan dua posisi dengan
+koordinat sama dianggap identik, yang penting untuk operasi collections seperti
+pengecekan duplikasi.
+
+\begin{lstlisting}[style=java, caption={Position.java}]
+public class Position {
+  private final int row;
+  private final int col;
+ 
+  // Memeriksa penyerangan antar Queen
+  public boolean attacks(Position other) {
+    if (this.equals(other)) return false;
+    
+    if (this.col == other.col) return true;
+    
+    if (Math.abs(this.row - other.row) == 1 && 
+        Math.abs(this.col - other.col) == 1) {
+      return true;
+    }
+    return false;
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Class Solution dan SolutionStats}
+
+Class \texttt{Solution} mengenkapsulasi hasil pencarian dengan menyimpan list
+posisi-posisi queen yang membentuk solusi valid beserta statistik pencariannya
+dalam bentuk objek \texttt{SolutionStats}. Pemisahan ini memungkinkan solusi
+dapat di-pass antar komponen tanpa kehilangan informasi penting tentang proses
+pencariannya. 
+
+Class \texttt{SolutionStats} berfungsi sebagai data transfer
+object yang menyimpan metadata pencarian: waktu yang diperlukan dalam milidetik
+(\texttt{elapsedTime}), jumlah konfigurasi yang telah dievaluasi
+(\texttt{casesReviewed}), dan flag boolean yang mengindikasikan apakah solusi
+ditemukan atau tidak (\texttt{found}). Informasi statistik ini berguna untuk
+analisis performa algoritma dan memberikan feedback kepada pengguna tentang
+kompleksitas pencarian yang dilakukan.
+
+\begin{lstlisting}[style=java, caption={Class Solution dan SolutionStats}]
+public class Solution {
+  private final List<Position> queenPositions;
+  private final SolutionStats stats;
+}
+
+public class SolutionStats {
+  private final long elapsedTime;      // Waktu pencarian (ms)
+  private final int casesReviewed;     // Jumlah kasus dicek
+  private final boolean found;         // Solusi ditemukan?
+}
+\end{lstlisting}
+
+\subsection{Komponen Service}
+
+\subsubsection{SolverService}
+
+Class \texttt{SolverService} mengimplementasikan algoritma \textit{brute force} untuk mencari solusi permasalahan Queens. Algoritma ini bekerja dengan melakukan enumerasi sistematis terhadap semua kemungkinan penempatan $n$ queen pada papan berukuran $n \times n$. Untuk efisiensi enumerasi, algoritma membatasi pencarian dengan menempatkan tepat satu queen pada setiap baris, sehingga ruang pencarian berkurang dari $n^{2n}$ menjadi $n^n$. Array \texttt{columns[]} digunakan untuk merepresentasikan konfigurasi, dimana \texttt{columns[i]} menyimpan nomor kolom tempat queen pada baris $i$ berada.
+
+Class ini menyediakan dua overload method \texttt{solve()}: satu tanpa parameter tambahan untuk mode CLI, dan satu dengan parameter \texttt{ProgressCallback} untuk mendukung update GUI secara real-time:
+
+\begin{lstlisting}[style=java, caption={Method solve() di SolverService}]
+public Solution solve(Board board) {
+  return solve(board, null);
+}
+
+public Solution solve(Board board, ProgressCallback progressCallback) {
+  int size = board.getSize();
+  int cases = 0;
+  long startTime = System.currentTimeMillis();
+
+  // Generate all n^n cases, store column number for queen in row i in column[i]
+  int[] columns = new int[size];
+
+  while (true) {
+    // Start with 1 Queen in each row
+    List<Position> solution = new ArrayList<>();
+    for (int row = 0; row < size; row++) {
+      solution.add(new Position(row, columns[row]));
+    }
+
+    cases++;
+
+    // Progress callback for GUI updates (every 10,000 iterations)
+    if (progressCallback != null && cases % 10000 == 0) {
+      progressCallback.onProgress(cases, solution);
+    }
+
+    if (isValidSolution(solution, board)) {
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      SolutionStats stats = new SolutionStats(elapsedTime, cases, true);
+      return new Solution(solution, stats);
+    }
+
+    // Generate new solutions
+    int row = size - 1;
+    while (row >= 0 && columns[row] == size - 1) {
+      columns[row] = 0;
+      row--;
+    }
+
+    if (row < 0) {
+      break;
+    }
+
+    columns[row]++;
+  }
+
+  // No solution found
+  return null;
+}
+\end{lstlisting}
+
+\subsubsection{FileService}
+
+Class \texttt{FileService} menangani semua operasi input/output file dalam aplikasi. Method \texttt{readBoardFromFile()} bertanggung jawab melakukan parsing file teks yang berisi representasi papan menjadi objek \texttt{Board}, dengan validasi format dan error handling yang sesuai. Method \texttt{saveSolutionToFile()} menyimpan solusi yang ditemukan ke file output dalam format yang mudah dibaca, mencakup visualisasi papan dengan penempatan queen dan informasi statistik pencarian. 
+
+Untuk kemudahan penggunaan, class ini juga mengimplementasikan path resolution otomatis: jika pengguna hanya memberikan nama file tanpa path lengkap, file input akan dicari di direktori \texttt{test/inputs/} dan output akan disimpan ke \texttt{test/outputs/}. Pendekatan ini mengurangi kebutuhan pengguna untuk mengetik path lengkap sambil tetap mendukung absolute path untuk fleksibilitas.
+
+\subsection{Komponen View}
+
+\subsubsection{QueensGUI}
+
+Class \texttt{QueensGUI} berfungsi sebagai entry point JavaFX Application untuk
+mode GUI. \texttt{QueensGUI} bertanggung jawab atas:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Inisialisasi aplikasi GUI dengan memuat layout FXML
+  \item Membuat \texttt{Scene} dari \texttt{FXMLLoader}
+  \item Konfigurasi dan menampilkan \texttt{Stage} utama aplikasi
+  \item Menerima dan memproses command-line arguments jika ada
+  \item Memisahkan definisi UI (FXML) dari inisialisasi runtime
+\end{itemize}
+
+\subsubsection{BoardCanvas}
+
+\texttt{BoardCanvas} adaklah component View untuk rendering papan dan queen
+secara programatik dan dinamis. Tugasnya, antara lain:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Rendering region warna dengan \texttt{GraphicsContext}
+  \item Menghitung dan menggambar grid lines sebagai pemisah sel
+  \item Visualisasi papan dengan warna berbeda per region
+  \item Rendering simbol queen pada posisi solusi
+  \item Adaptasi ukuran sel berdasarkan dimensi canvas
+  \item Custom drawing dengan kontrol penuh atas rendering
+\end{itemize}
+
+\subsection{Komponen Controller}
+
+\subsubsection{CLIController}
+
+\texttt{CLIController} berfungsi sebagai controller untuk mode prototype \textit{command-line
+interface}, yang kemudian disesuaikan untuk logging selama keberjalanan aplikasi
+dalam bentuk GUI. Tugasnya, antara lain:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Parsing argumen command-line atau prompt input dari pengguna
+  \item Koordinasi dengan \texttt{FileService} untuk membaca file input
+  \item Memanggil \texttt{SolverService} untuk eksekusi pencarian solusi
+  \item Menampilkan hasil ke console dengan format user-friendly
+  \item Menawarkan opsi penyimpanan hasil ke file output
+\end{itemize}
+
+\subsubsection{MainController}
+
+\texttt{MainController} adalah controller utama untuk GUI JavaFX yang dilengkapi
+dengan FXML binding. MainController bertanggung jawab atas:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Binding dengan komponen UI melalui annotation \texttt{@FXML}
+  \item Event handling untuk pemilihan file dengan \texttt{FileChooser}
+  \item Implementasi multithreading untuk solver menggunakan \texttt{Task}
+  \item Progress update real-time dengan \texttt{Platform.runLater()}
+  \item Koordinasi rendering hasil solusi pada canvas
+  \item Menampilkan statistik pencarian di GUI
+\end{itemize}
+
+\subsection{Analisis Algoritma}
+
+\subsubsection{Cara Kerja Algoritma}
+
+Algoritma bekerja menggunakan prinsip \textit{generate-and-test} dengan strategi enumerasi berbasis counting. Proses dimulai dengan inisialisasi array \texttt{columns[]} dengan nilai 0, merepresentasikan semua queen pada kolom paling kiri. Pada setiap iterasi, algoritma melakukan tiga langkah utama:
+
+\begin{enumerate}
+  \item \textbf{Penghasilan kandidat solusi} 
+
+Algoritma membentuk list \texttt{Position} dari representasi array, dimana posisi queen pada baris $i$ adalah $(i, \text{columns}[i])$. Proses ini dilakukan dalam waktu $O(n)$.
+
+ \item \textbf{Uji validitas solusi}
+
+Setiap kandidat divalidasi dengan memeriksa:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Tidak ada serangan}: Dilakukan pengecekan pairwise antara semua queen untuk memastikan tidak ada yang berada pada kolom sama atau diagonal bersebelahan. Validasi ini memerlukan $O(n^2)$ perbandingan.
+  \item \textbf{Satu queen per region}: Menggunakan \texttt{HashMap} untuk menghitung jumlah queen pada setiap region dalam waktu $O(n)$, kemudian memverifikasi bahwa semua region memiliki tepat satu queen.
+\end{itemize}
+
+\item \textbf{Inkrementasi ke kandidat berikutnya} 
+
+Jika kandidat current tidak valid, algoritma melakukan inkrementasi pada array
+\texttt{columns[]}, mengikuti prinsip counting dalam basis $n$. Dimulai dari
+indeks paling kanan, algoritma mencari posisi pertama yang nilainya belum
+mencapai $n-1$, mengembalikan semua posisi di sebelah kanannya ke 0, lalu
+melakukan \textit{increment} pada posisi tersebut. Jika tidak ditemukan posisi
+yang dapat diinkrementasi (semua bernilai $n-1$), maka seluruh ruang pencarian telah dieksplorasi.
+
+Proses enumerasi ini menjamin completeness karena counting sistematis menghasilkan semua permutasi yang mungkin tanpa duplikasi atau missing configuration.
+
+\end{enumerate}
+
+\subsubsection{Fungsi Validasi}
+
+Fungsi validasi memeriksa dua kondisi utama yang harus dipenuhi oleh setiap
+kandidat solusi, yaitu tidak ada \textit{Queen} yang saling menyerang (yang
+dipenuhi oleh method \texttt{isValidSolution}) dan hanya terdapata 1
+\textit{Queen} pada tiap wilayah/region (yang dipenuhi oleh
+\texttt{hasOnePerRegion}).
+
+\begin{lstlisting}[style=java, caption={Fungsi validasi constraint}]
+private boolean isValidSolution(List<Position> queenPositions, Board board) {
+  if (hasAttacks(queenPositions)) {
+    return false;
+  }
+  return hasOnePerRegion(queenPositions, board);
+}
+
+private boolean hasAttacks(List<Position> queenPositions) {
+  for (int i = 0; i < queenPositions.size(); i++) {
+    for (int j = i + 1; j < queenPositions.size(); j++) {
+      if (queenPositions.get(i).attacks(queenPositions.get(j))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+private boolean hasOnePerRegion(List<Position> queenPositions, Board board) {
+  Map<Character, Integer> regionCounts = new HashMap<>();
+
+  for (Position queen : queenPositions) {
+    char region = board.getRegion(queen);
+    regionCounts.put(region, regionCounts.getOrDefault(region, 0) + 1);
+  }
+
+  // Check for only 1 queen per region
+  List<Character> regions = board.getRegions();
+  if (regionCounts.size() != regions.size()) {
+    return false;
+  }
+
+  for (int count : regionCounts.values()) {
+    if (count != 1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+\end{lstlisting}
+
+\subsubsection{Kompleksitas Waktu Algoritma}
+
+Algoritma mengeksplorasi hingga $n^n$ konfigurasi berbeda. Nilai ini berasal
+dari fakta bahwa terdapat $n$ pilihan kolom untuk setiap $n$ baris, dan dengan
+menempatkan tepat satu queen per baris, total kombinasi yang mungkin adalah:
+
+\[
+\underbrace{n \times n \times n \times \cdots \times n}_{n \text{ faktor}} = n^n
+\]
+
+Sebagai contoh, untuk papan $5 \times 5$, ruang pencarian memiliki $5^5 = 3,125$
+konfigurasi. Untuk papan $10 \times 10$, terdapat $10^{10} \approx 10$ miliar konfigurasi.
+
+\newpage
+
+Setiap kali program dijalankan, algoritma melaksanakan:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Penghasilan calon solusi} dengan kompleksitas $O(n)$ untuk
+    membuat list posisi.
+  \item \textbf{Validasi serangan} dengan kompleksitas $O(n^2)$ untuk pengecekan
+    pairwise semua queen.
+  \item \textbf{Validasi \textit{Queen} pada setiap wilayah} dengan kompleksitas
+    $O(n)$ untuk counting dengan HashMap.
+  \item \textbf{Inkrementasi array konfigurasi} dengan kompleksitas $O(n)$
+    (\textit{worst case}) untuk reset dan increment.
+\end{itemize}
+
+\textit{Computational Cost} per iterasi adalah $O(n^2)$ dari validasi serangan,
+sehingga kompleksitas waktu total adalah:
+\[
+T(n) = O(n^n \cdot n^2)
+\]
+
+Kompleksitas eksponensial ini membatasi ukuran papan yang dapat diselesaikan dalam waktu wajar. Tabel berikut menunjukkan estimasi jumlah operasi:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ccr}
+    \toprule
+    \textbf{$n$} & \textbf{Konfigurasi ($n^n$)} & \textbf{Estimasi Operasi} \\
+    \midrule
+    4  & $256$ & $\sim 4 \times 10^3$ \\
+    5  & $3,125$ & $\sim 8 \times 10^4$ \\
+    6  & $46,656$ & $\sim 2 \times 10^6$ \\
+    7  & $823,543$ & $\sim 4 \times 10^7$ \\
+    8  & $16,777,216$ & $\sim 10^9$ \\
+    10 & $10^{10}$ & $\sim 10^{12}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Pertumbuhan ruang pencarian algoritma brute force}
+\end{table}
+
+\subsubsection{Kompleksitas Ruang Algoritma}
+
+Kompleksitas ruang adalah $O(n^2)$, dengan rincian alokasi memori utama sebagai
+berikut:
+
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Matriks \textit{board}}: $O(n^2)$ untuk menyimpan grid region warna
+  \item \textbf{Struktur data map untuk region warna}: $O(n^2)$ worst case jika setiap sel adalah region berbeda
+  \item \textbf{Array \texttt{columns[]}}: $O(n)$ untuk representasi konfigurasi current
+  \item \textbf{List kandidat sementara}: $O(n)$ untuk list posisi temporary per iterasi
+  \item \textbf{HashMap validasi}: $O(k)$ dimana $k \leq n$ adalah jumlah region unik
+\end{itemize}
+
+Dominasi penggunaan memori adalah struktur data \texttt{board} yang memerlukan
+penyimpanan proporsional dengan luas papan, sehingga kompleksitas ruang
+algoritma ini adalah:
+
+\[
+S(n) = O(n^2)
+\]
+
+\section{Eksperimen dan Analisis}
+
+\subsection{Test Case 1: Papan 2$\times$2 }
+
+\subsubsection{Input}
+
+File \texttt{tc1.txt} berisi papan berukuran $2 \times 2$ dengan 2 wilayah
+warna (\texttt{A} dan \texttt{B}):
+
+\begin{lstlisting}[style=default, caption={tc1.txt}]
+AB
+BA
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc1.png}
+  \caption{Output program untuk test case 1 (papan $2\times2$)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Pada papan $2 \times 2$ dengan 2 wilayah, tidak ada konfigurasi penempatan 2
+queen yang memenuhi seluruh constraint. Setiap penempatan queen pada baris
+pertama akan menyebabkan queen pada baris kedua berada pada kolom yang sama
+atau bersebelahan secara diagonal. Program dengan benar menampilkan pesan
+\textit{``No Solution''}.
+
+\subsection{Test Case 2: Papan 5$\times$5}
+
+\subsubsection{Input}
+
+File \texttt{tc2.txt} berisi papan berukuran $5 \times 5$ dengan 5 wilayah
+warna (\texttt{A}--\texttt{E}):
+
+\begin{lstlisting}[style=default, caption={tc2.txt}]
+AABBC
+AABBC
+DDBBC
+DDEEC
+DDEEE
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc2.png}
+  \caption{Output program untuk test case 2 (papan $5\times5$)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Program berhasil menemukan solusi valid pada papan $5 \times 5$. Setiap queen
+ditempatkan pada baris, kolom, dan wilayah yang berbeda, serta tidak ada dua
+queen yang bersebelahan secara diagonal. Ruang pencarian sebesar $5^5 = 3.125$
+konfigurasi dapat diselesaikan dalam waktu sangat singkat (di bawah 6 ms) dalam
+350 iterasi.
+
+\subsection{Test Case 3: Papan 7$\times$7}
+
+\subsubsection{Input}
+
+File \texttt{tc3.txt} berisi papan berukuran $7 \times 7$ dengan 7 wilayah
+warna (\texttt{A}--\texttt{G}):
+
+\begin{lstlisting}[style=default, caption={tc3.txt}]
+AAABBBC
+AACBBBC
+AACDDBC
+EECDDBC
+EECDDFG
+EEEDDFF
+EEEDDFF
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc3.png}
+  \caption{Output program untuk test case 3 (papan $7\times7$)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Program berhasil menemukan solusi valid pada papan $7 \times 7$. Ruang pencarian
+sebesar $7^7 = 823.543$ konfigurasi membutuhkan waktu yang lebih lama
+dibandingkan TC2, namun masih dalam rentang waktu yang wajar (di sekitar 1
+detik) dalam 190.000 iterasi. Hasil ini menunjukkan pertumbuhan waktu eksekusi
+yang signifikan seiring bertambahnya ukuran papan.
+
+\subsection{Test Case 4: Papan 7$\times$7 dengan Input Tidak Valid}
+
+\subsubsection{Input}
+
+File \texttt{tc4.txt} berisi papan berukuran $7 \times 7$ namun
+baris ke-5 hanya memiliki 3 karakter (tidak lengkap):
+
+\begin{lstlisting}[style=default, caption={tc4.txt}]
+AAABBBC
+AACBBBC
+AACDDBC
+EECDDBC
+EEC
+EEEDDFF
+EEEDDFF
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc4.png}
+  \caption{Output program untuk test case 4 (input tidak valid)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Program mendeteksi bahwa baris ke-5 memiliki panjang yang tidak konsisten dengan
+baris-baris lainnya (3 karakter alih-alih 7). \texttt{FileService} memvalidasi
+format input sebelum memulai pencarian dan menampilkan pesan error yang
+informatif kepada pengguna. 
+
+\subsection{Test Case 5: Papan 9$\times$9}
+
+\subsubsection{Input}
+
+File \texttt{tc5.txt} berisi papan berukuran $9 \times 9$ dengan 9 wilayah
+warna (\texttt{A}--\texttt{I}):
+
+\begin{lstlisting}[style=default, caption={tc5.txt}]
+AAABBCCCD
+ABBBBCECD
+ABBBDCECD
+AAABDCCCD
+BBBBDDDDD
+FGGGDDHDD
+FGIGDDHDD
+FGIGDDHDD
+FGGGDDHHH
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc5.png}
+  \caption{Output program untuk test case 5 (papan $9\times9$)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Program berhasil menemukan solusi valid pada papan $9 \times 9$. Ruang pencarian
+sebesar $9^9 \approx 387$ juta konfigurasi membutuhkan waktu yang jauh lebih
+lama dibandingkan TC3, yaitu 45687 ms dalam 323741637 iterasi. Hasil ini
+mengkonfirmasi pertumbuhan kompleksitas eksponensial $O(n^n)$ dari algoritma
+\textit{brute force}.
+
+\subsection{Test Case 6: Papan 10$\times$10}
+
+\subsubsection{Input}
+
+File \texttt{tc6.txt} berisi papan berukuran $10 \times 10$ dengan 10
+wilayah warna (\texttt{A}--\texttt{J}):
+
+\begin{lstlisting}[style=default, caption={tc6.txt}]
+AAAABBCCDD
+AAAABBCCDD
+AAEEBBCCDD
+AAEEBBFFDD
+AAEEGGFFDD
+HHEEGGFFDD
+HHEEGGFFII
+HHEEGGFFII
+HHJJGGFFII
+HHJJJJFFII
+\end{lstlisting}
+
+\subsubsection{Output}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{assets/tc6.png}
+  \caption{Output program untuk test case 6 (papan $10\times10$)}
+\end{figure}
+
+\subsubsection{Analisis}
+
+Papan $10 \times 10$ memiliki ruang pencarian sebesar $10^{10} = 10$ miliar
+konfigurasi. Waktu eksekusi yang meningkat drastis dibandingkan TC5 menjadi
+68509 ms dalam 462581740 iterasi menggambarkan batas praktis dari algoritma
+\textit{brute force}. Hasil ini menunjukkan bahwa untuk papan berukuran besar,
+lebih ideal jika menggunakan teknik heuristik untuk menyederhanakan eliminasi
+calon solusi atau menggunakan algoritma yang lebih
+efisien seperti \textit{backtracking}.
+
+\section{Kesimpulan}
+
+\subsection{Ringkasan}
+\begin{enumerate}[label=\arabic*., leftmargin=2em]
+  \item \textbf{Temuan 1} --- deskripsi temuan pertama dari eksperimen.
+  \item \textbf{Temuan 2} --- deskripsi temuan kedua dari eksperimen.
+  \item \textbf{Temuan 3} --- deskripsi temuan ketiga dari eksperimen.
+\end{enumerate}
+
+\subsection{Saran Pengembangan}
+\begin{enumerate}[label=\arabic*., leftmargin=2em]
+  \item Implementasi algoritma \textit{backtracking} untuk meningkatkan efisiensi pencarian.
+  \item Penambahan heuristik seperti \textit{constraint propagation} untuk mengurangi ruang pencarian.
+  \item Optimisasi multithreading untuk memanfaatkan multiple CPU cores.
+  \item Implementasi mode batch processing untuk menyelesaikan multiple puzzle secara bersamaan.
+\end{enumerate}
+
+\subsection{Refleksi dan Saran}
+
+Tugas ini keren! Jujur, ga \textit{expect} kalo Tucil 1 ini bakal menggunakan
+permainan yang masih cukup relevan di zaman sekarang, dan lewat Tucil ini saya
+belajar banyak. Terima kasih aku sampaikan kepada asisten yang telah memberikan
+pertimbangan baik dalam menjawab dan merevisi spesifikasi yang tertera pada QnA!
+
+
+\newpage
+\addcontentsline{toc}{section}{Daftar Pustaka}
+\section*{Daftar Pustaka}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2.5em, itemsep=0.3em]
+
+\item LinkedIn, ``Queens Puzzle,'' 2024. [Online]. Available: \url{https://www.linkedin.com/games/queens/}.
+
+\item R. Munir, \textit{Diktat Kuliah IF2211 Strategi Algoritma}. Bandung: Program Studi Teknik Informatika ITB, 2024.
+
+\item T. H. Cormen, C. E. Leiserson, R. L. Rivest, and C. Stein, \textit{Introduction to Algorithms}, 3rd ed. Cambridge, MA: MIT Press, 2009.
+
+\item Oracle, ``JavaFX Documentation,'' 2024. [Online]. Available: \url{https://openjfx.io/}.
+
+\item E. Gamma, R. Helm, R. Johnson, and J. Vlissides, \textit{Design Patterns: Elements of Reusable Object-Oriented Software}. Reading, MA: Addison-Wesley, 1994.
+
+\item Gradle Inc., ``Gradle User Manual,'' 2024. [Online]. Available: \url{https://docs.gradle.org/}.
+
+\end{enumerate}
+
+\newpage
+\addcontentsline{toc}{section}{Appendix}
+\section*{Appendix}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Resource} & \textbf{Link} \\
+    \midrule
+    GitHub Repository & \url{\RepoURL} \\
+    Live Deployment   & \url{\DeployURL} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Repository and deployment links}
+\end{table}
+
+\end{document}
