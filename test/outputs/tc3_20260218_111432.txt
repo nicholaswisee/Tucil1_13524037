@@ -1,0 +1,10 @@
+A#ABBBC
+AACB#BC
+AA#DDBC
+#ECDDBC
+EECDDF#
+EEE#DFF
+EEEDD#F
+
+Waktu pencarian: 66 ms
+Banyak kasus yang ditinjau: 190000 kasus

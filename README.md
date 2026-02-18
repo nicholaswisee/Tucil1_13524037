@@ -2,9 +2,9 @@
 
 A pure brute-force solver for the LinkedIn Queens puzzle that tests all possible queen placements to find valid configurations.
 
-The brute-force approach used involves neither heuristics nor optimizations, and works purely by generating all possible placements of Queens, limited to only 1 Queen per row.
+The brute-force approach used involves neither heuristics nor optimizations, and works purely by generating all possible placements of Queens, limited to only 1 Queen per row (exhaustive search).
 
-A Model-View-Controller (MVC) architecture is used to modularize a clean, modular approach to structure the project, using Gradle as the package manager + builder.
+A Model-View-Controller (MVC) architecture is used to structure the project cleanly, using Gradle as the build tool.
 
 ## Requirements
 
@@ -27,10 +27,10 @@ A Model-View-Controller (MVC) architecture is used to modularize a clean, modula
 
    Should display Java version 21 or higher.
 
-2. **Clone or extract this repository**:
+2. **Clone this repository**:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/nicholaswisee/Tucil1_1352403
    cd Tucil1_13524037
    ```
 
@@ -43,52 +43,63 @@ This project uses **Gradle** as the build tool. The Gradle wrapper is included, 
 On **Linux/macOS**:
 
 ```bash
-./gradlew build
+./gradlew build --no-configuration-cache
 ```
 
 On **Windows**:
 
 ```bash
-gradlew.bat build
+gradlew.bat build --no-configuration-cache
 ```
 
 ## Running the Program
 
-### Step 1: Create an Input File
-
-Create a `.txt` file with your board configuration. Each line represents a row, and letters (A-Z) represent regions.
-
-**Example:** Create `test/inputs/myboard.txt`
-
-```
-AABC
-ABBC
-DBBC
-DDDC
-```
-
-### Step 2: Run the Solver
-
-**Simple command (filename only):**
+Run the JavaFX GUI application:
 
 ```bash
-java -jar bin/Tucil1_13524037-1.0.jar medium.txt
+./gradlew run --no-configuration-cache
 ```
 
-**Or with full path:**
-
-```bash
-java -jar bin/Tucil1_13524037-1.0.jar test/inputs/myboard.txt
-```
-
-**Or without arguments (will prompt):**
+Or using the pre-built JAR:
 
 ```bash
 java -jar bin/Tucil1_13524037-1.0.jar
 ```
 
-> **Note:** If you provide just a filename (e.g., `medium.txt`), it automatically looks in `test/inputs/`.
+> **Note:** If you provide just a filename (e.g., `tc2.txt`), it automatically looks in `test/inputs/`.
 > When saving, if you provide just a filename, it automatically saves to `test/outputs/`.
+
+## Input Format
+
+Create a `.txt` file where each line represents a row of the board, and letters (`A`–`Z`) represent color regions. The board must be square (N×N) with exactly N distinct regions.
+
+**Example** (`test/inputs/tc2.txt` — 5×5 board):
+
+```
+AABBC
+AABBC
+DDBBC
+DDEEC
+DDEEE
+```
+
+## Output Format
+
+The `.txt` output marks queen positions with `#`:
+
+```
+AA#BC
+AABBC
+DDBBC
+DDEEC
+DD#EE
+Waktu pencarian: 6 ms
+Banyak kasus yang ditinjau: 350 kasus
+```
+
+## Test Cases
+
+Pre-built test cases are available in `test/inputs/`.
 
 ## Project Structure
 
@@ -98,27 +109,27 @@ Tucil1_13524037/
 │   └── main/
 │       ├── java/
 │       │   └── queens/
-│       │       ├── Main.java          # Application entry point
-│       │       ├── model/             # Model Layer (Domain entities)
-│       │       ├── view/              # View Layer (UI components)
-│       │       ├── controller/        # Controller Layer
-│       │       ├── service/           # Service Layer
-│       │       └── util/              # Utility classes
-│       └── resources/       # Resources (FXML layouts)
+│       │       ├── Main.java              # Application entry point
+│       │       ├── model/                 # Model layer (Board, Solution, Position, SolutionStats)
+│       │       ├── view/                  # View layer (BoardCanvas, QueensGUI)
+│       │       ├── controller/            # Controller layer (MainController, CLIController)
+│       │       ├── service/               # Service layer (SolverService, FileService)
+│       │       └── util/                  # Utility classes (BoardFormatter)
+│       └── resources/
 │           └── queens/gui/
-│               └── MainView.fxml
-├── bin/                     # Compiled executable JAR files
-├── test/                    # Test cases and solutions
-│   ├── inputs/              # Input test files
-│   └── outputs/             # Solution output files
-├── doc/                     # Documentation
-├── build.gradle             # Gradle build configuration
-├── settings.gradle          # Gradle settings
-├── MVC_ARCHITECTURE.md      # MVC architecture documentation
+│               └── MainView.fxml          # JavaFX layout
+├── bin/                                   # Pre-built executable JAR
+│   └── Tucil1_13524037-1.0.jar
+├── test/
+│   ├── inputs/                            # Input test files (tc1.txt – tc6.txt)
+│   └── outputs/                           # Solution output files (generated)
+├── doc/                                   # Documentation and report (main.tex)
+├── build.gradle                           # Gradle build configuration
+├── settings.gradle                        # Gradle settings
 └── README.md
 ```
 
 ## Author
 
 **Nicholas Wise Saragih Sumbayak**  
-13524037 - Informatics Engineering
+13524037 — Teknik Informatika, Institut Teknologi Bandung

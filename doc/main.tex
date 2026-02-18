@@ -124,7 +124,7 @@
 \newcommand{\University}{Institut Teknologi Bandung}
 
 % Repository / deployment links (used in Appendix)
-\newcommand{\RepoURL}{https://github.com/your-org/your-repo}
+\newcommand{\RepoURL}{https://github.com/nicholaswisee/Tucil1_1352403}
 \newcommand{\DeployURL}{https://your-deployment-url.example.com}
 
 \begin{document}
@@ -162,8 +162,8 @@
 
 \section{Pendahuluan}
 
-Queens adalah gim logika yang tersedia pada situs jejaring profesional LinkedIn. Tujuan dari gim ini
-adalah menempatkan queen pada sebuah papan persegi berwarna sehingga terdapat hanya satu queen pada
+Queens adalah minigame logika yang tersedia pada situs jejaring profesional LinkedIn. Tujuan dari gim ini
+adalah menempatkan berbagai \textit{Queen} pada sebuah papan persegi berwarna sehingga terdapat hanya satu queen pada
 tiap baris, kolom, dan daerah warna. Selain itu, satu queen tidak dapat ditempatkan bersebelahan dengan
 queen lainnya, termasuk secara diagonal.
 
@@ -200,16 +200,16 @@ Karakteristik algoritma \textit{brute force} antara lain:
     diimplementasikan.
 \end{itemize}
 
-\subsubsection{Algoritma \textit{Heuristic Search}}
+\subsubsection{Algoritma \textit{Exhaustive Search}}
 
-Algoritma \textit{Heuristic Search} termasuk dalam kategori algoritma
-\textit{brute-force}. Cara kerja \textit{heuristic search} sangat lempang
+Algoritma \textit{Exhaustive Search} termasuk dalam kategori algoritma
+\textit{brute-force}. Cara kerja \textit{exhaustive search} sangat lempang
 (seperti \textit{brute-force} pada umumnya): Mencoba semua kemungkinan solusi
 hingga menemukan solusi yang benar. Umumnya, algoritma ini digunakan untuk
 menyelesaikan permasalahan dalam lingkup kombinatorika, yang melibatkan solusi
 berbentuk sebuah permutasi, kombinasi, atau himpunan.
 
-Inti dari \textit{exhaustic search} dapat dibagi menjadi tiga langkah, yaitu:
+Inti dari \textit{exhaustive search} dapat dibagi menjadi tiga langkah, yaitu:
 \begin{enumerate}[leftmargin=1.5em]
   \item \textbf{Enumerasi} \textit{list} setiap kemungkinan solusi,
   \item \textbf{Evaluasi} semua kemungkinan solusi masing-masing,
@@ -265,7 +265,7 @@ Suatu konfigurasi penempatan queen dianggap valid jika memenuhi kondisi berikut:
   \item \textbf{Tidak ada serangan antar queen}
   \begin{itemize}
     \item Tidak ada dua queen pada kolom atau baris yang sama
-    \item Tidak ada dua queen yang bersebelahan secara diagonal (Jarak Manhattan = 1)
+    \item Tidak ada dua queen yang bersebelahan secara diagonal (jarak Manhattan = 1)
   \end{itemize}
   
   \item \textbf{Satu queen per wilayah}
@@ -275,7 +275,7 @@ Suatu konfigurasi penempatan queen dianggap valid jika memenuhi kondisi berikut:
 \end{enumerate}
 
 Berdasarkan kedua kondisi di atas, fungsi validasi dapat dinyatakan sebagai:
-[
+\[
 \text{isValid}(S) = \neg\text{hasAttacks}(S) \land \text{onePerRegion}(S)
 \]
 dimana $S$ adalah himpunan posisi queen, \texttt{hasAttacks}$(S)$ mengecek adanya serangan antar queen, dan \texttt{onePerRegion}$(S)$ memverifikasi distribusi queen pada region.
@@ -308,7 +308,7 @@ menginstal Gradle secara manual.
 
 \subsubsection{Struktur Direktori}
 
-Repository diorganisir mengikuti konvensi standar Maven/Gradle untuk proyek
+Repository diorganisir mengikuti konvensi standar Gradle untuk proyek
 Java. Direktori \texttt{src/main/java/} berisi seluruh source code aplikasi yang
 dikelompokkan dalam package \texttt{queens} dengan sub-package sesuai pola MVC.
 Direktori \texttt{src/main/resources/} menyimpan resource non-code seperti file
@@ -355,7 +355,7 @@ public class Board {
 
 \subsubsection{Class Position}
 
-Class \texttt{Position} adalah value object immutable yang merepresentasikan
+Class \texttt{Position} adalah value object \textit{immutable} yang merepresentasikan
 koordinat pada papan dengan atribut \texttt{row} dan \texttt{col}. Selain
 sebagai container data, class ini juga mengenkapsulasi logika untuk mendeteksi
 serangan antar queen melalui method \texttt{attacks()}. Method ini
@@ -367,6 +367,8 @@ menjamin hanya satu queen per baris. Class ini mengoverride method
 \texttt{equals()} dan \texttt{hashCode()} untuk memastikan dua posisi dengan
 koordinat sama dianggap identik, yang penting untuk operasi collections seperti
 pengecekan duplikasi.
+
+\vfill
 
 \begin{lstlisting}[style=java, caption={Position.java}]
 public class Position {
@@ -494,8 +496,8 @@ mode GUI. \texttt{QueensGUI} bertanggung jawab atas:
   \item Inisialisasi aplikasi GUI dengan memuat layout FXML
   \item Membuat \texttt{Scene} dari \texttt{FXMLLoader}
   \item Konfigurasi dan menampilkan \texttt{Stage} utama aplikasi
-  \item Menerima dan memproses command-line arguments jika ada
-  \item Memisahkan definisi UI (FXML) dari inisialisasi runtime
+  \item Menerima dan memproses \textit{command-line arguments} jika ada
+\item Memisahkan definisi UI (FXML) dari inisialisasi \textit{runtime}
 \end{itemize}
 
 \subsubsection{BoardCanvas}
@@ -507,9 +509,10 @@ secara programatik dan dinamis. Tugasnya, antara lain:
   \item Rendering region warna dengan \texttt{GraphicsContext}
   \item Menghitung dan menggambar grid lines sebagai pemisah sel
   \item Visualisasi papan dengan warna berbeda per region
-  \item Rendering simbol queen pada posisi solusi
+  \item Rendering simbol \textit{queen} pada posisi solusi
   \item Adaptasi ukuran sel berdasarkan dimensi canvas
-  \item Custom drawing dengan kontrol penuh atas rendering
+  \item Custom drawing dengan kontrol penuh atas \textit{rendering}
+  \item Menyediakan \textit{snapshot canvas} sebagai \texttt{WritableImage} untuk ekspor gambar
 \end{itemize}
 
 \subsection{Komponen Controller}
@@ -521,10 +524,10 @@ interface}, yang kemudian disesuaikan untuk logging selama keberjalanan aplikasi
 dalam bentuk GUI. Tugasnya, antara lain:
 
 \begin{itemize}[leftmargin=1.5em]
-  \item Parsing argumen command-line atau prompt input dari pengguna
+  \item Parsing argumen \textit{command-line} atau input dari pengguna
   \item Koordinasi dengan \texttt{FileService} untuk membaca file input
   \item Memanggil \texttt{SolverService} untuk eksekusi pencarian solusi
-  \item Menampilkan hasil ke console dengan format user-friendly
+  \item Menampilkan hasil ke \textit{console} dengan format user-friendly
   \item Menawarkan opsi penyimpanan hasil ke file output
 \end{itemize}
 
@@ -540,6 +543,8 @@ dengan FXML binding. MainController bertanggung jawab atas:
   \item Progress update real-time dengan \texttt{Platform.runLater()}
   \item Koordinasi rendering hasil solusi pada canvas
   \item Menampilkan statistik pencarian di GUI
+  \item Ekspor solusi ke file \texttt{.txt} (papan dengan posisi queen dan statistik)
+  \item Ekspor tampilan papan ke file gambar \texttt{.png} via snapshot canvas
 \end{itemize}
 
 \subsection{Analisis Algoritma}
@@ -900,52 +905,72 @@ efisien seperti \textit{backtracking}.
 
 \section{Kesimpulan}
 
-\subsection{Ringkasan}
 \begin{enumerate}[label=\arabic*., leftmargin=2em]
-  \item \textbf{Temuan 1} --- deskripsi temuan pertama dari eksperimen.
-  \item \textbf{Temuan 2} --- deskripsi temuan kedua dari eksperimen.
-  \item \textbf{Temuan 3} --- deskripsi temuan ketiga dari eksperimen.
+  \item Algoritma \textit{brute force} dengan strategi \textit{exhaustive search}
+    berhasil menyelesaikan permasalahan Queens secara langsung dan menjamin
+    \textit{completeness} pencarian, namun dengan kompleksitas waktu $O(n^n \cdot n^2)$
+    yang tumbuh sangat cepat seiring bertambahnya ukuran papan.
+  \item Eksperimen menunjukkan bahwa papan berukuran kecil ($n \leq 7$) dapat
+    diselesaikan dalam waktu di bawah 1 detik, sedangkan papan berukuran $n = 9$
+    membutuhkan sekitar 45 detik dan $n = 10$ sekitar 68 detik, mengonfirmasi
+    batas praktis algoritma ini. 
+  \item Untuk mempercepat pencarian solusi dengan tetap menggunakan prinsip
+    \textit{brute-force}, dapat ditambahkan menggunakan teknik heuristik untuk
+    mengeliminasi kasus tanpa melakukan komputasi untuk setiap kasus.
 \end{enumerate}
 
-\subsection{Saran Pengembangan}
-\begin{enumerate}[label=\arabic*., leftmargin=2em]
-  \item Implementasi algoritma \textit{backtracking} untuk meningkatkan efisiensi pencarian.
-  \item Penambahan heuristik seperti \textit{constraint propagation} untuk mengurangi ruang pencarian.
-  \item Optimisasi multithreading untuk memanfaatkan multiple CPU cores.
-  \item Implementasi mode batch processing untuk menyelesaikan multiple puzzle secara bersamaan.
-\end{enumerate}
 
 \subsection{Refleksi dan Saran}
 
 Tugas ini keren! Jujur, ga \textit{expect} kalo Tucil 1 ini bakal menggunakan
-permainan yang masih cukup relevan di zaman sekarang, dan lewat Tucil ini saya
-belajar banyak. Terima kasih aku sampaikan kepada asisten yang telah memberikan
+permainan yang masih cukup relevan untuk dimainkan, dan karena Tucil ini beban
+untuk membuat solver-nya tergolong \textit{pas}, saya cukup puas dalam
+mengerjakannya. Terima kasih aku sampaikan kepada asisten yang telah memberikan
 pertimbangan baik dalam menjawab dan merevisi spesifikasi yang tertera pada QnA!
 
 
-\newpage
 \addcontentsline{toc}{section}{Daftar Pustaka}
 \section*{Daftar Pustaka}
 
 \begin{enumerate}[label={[\arabic*]}, leftmargin=2.5em, itemsep=0.3em]
 
-\item LinkedIn, ``Queens Puzzle,'' 2024. [Online]. Available: \url{https://www.linkedin.com/games/queens/}.
+\item LinkedIn, ``Queens,'' LinkedIn Games, 2024. [Online]. Available:
+  \url{https://www.linkedin.com/games/queens/}.
 
-\item R. Munir, \textit{Diktat Kuliah IF2211 Strategi Algoritma}. Bandung: Program Studi Teknik Informatika ITB, 2024.
+\item R. Munir, ``Algoritma Brute Force (Bagian 1),'' IF2211
+  Strategi Algoritma, Institut Teknologi Bandung, 2026. [Online]. Available:
+  \url{https://informatika.stei.itb.ac.id/~rinaldi.munir/Stmik/2025-2026/02-Algoritma-Brute-Force-(2026)-Bag1.pdf}.
 
-\item T. H. Cormen, C. E. Leiserson, R. L. Rivest, and C. Stein, \textit{Introduction to Algorithms}, 3rd ed. Cambridge, MA: MIT Press, 2009.
-
-\item Oracle, ``JavaFX Documentation,'' 2024. [Online]. Available: \url{https://openjfx.io/}.
-
-\item E. Gamma, R. Helm, R. Johnson, and J. Vlissides, \textit{Design Patterns: Elements of Reusable Object-Oriented Software}. Reading, MA: Addison-Wesley, 1994.
-
-\item Gradle Inc., ``Gradle User Manual,'' 2024. [Online]. Available: \url{https://docs.gradle.org/}.
+\item R. Munir, ``Algoritma Brute Force (Bagian 2),'' IF2211
+  Strategi Algoritma, Institut Teknologi Bandung, 2026. [Online]. Available:
+  \url{https://informatika.stei.itb.ac.id/~rinaldi.munir/Stmik/2025-2026/03-Algoritma-Brute-Force-(2026)-Bag2.pdf}.
 
 \end{enumerate}
 
-\newpage
 \addcontentsline{toc}{section}{Appendix}
 \section*{Appendix}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|p{11cm}|c|c|}
+    \hline
+    \textbf{No} & \textbf{Poin} & \textbf{Ya} & \textbf{Tidak} \\
+    \hline
+    1 & Program berhasil di kompilasi tanpa kesalahan & \checkmark & \\
+    \hline
+    2 & Program berhasil di jalankan & \checkmark & \\
+    \hline
+    3 & Solusi yang diberikan program benar dan mematuhi aturan permainan & \checkmark & \\
+    \hline
+    4 & Program dapat membaca masukan berkas \texttt{.txt} serta menyimpan solusi dalam berkas \texttt{.txt} & \checkmark & \\
+    \hline
+    5 & Program memiliki \textit{Graphical User Interface} (GUI) & \checkmark & \\
+    \hline
+    6 & Program dapat menyimpan solusi dalam bentuk file gambar & \checkmark & \\
+    \hline
+  \end{tabular}
+  \caption{Checklist pemenuhan spesifikasi program}
+\end{table}
 
 \begin{table}[H]
   \centering
@@ -954,10 +979,35 @@ pertimbangan baik dalam menjawab dan merevisi spesifikasi yang tertera pada QnA!
     \textbf{Resource} & \textbf{Link} \\
     \midrule
     GitHub Repository & \url{\RepoURL} \\
-    Live Deployment   & \url{\DeployURL} \\
     \bottomrule
   \end{tabular}
-  \caption{Repository and deployment links}
 \end{table}
 
+
+\addcontentsline{toc}{section}{Pernyataan Keaslian}
+\section*{Pernyataan Keaslian}
+
+\begin{center}
+\begin{minipage}{0.85\textwidth}
+\begin{tcolorbox}[
+  colback=white, colframe=black,
+  boxrule=0.8pt, arc=0pt,
+  left=5pt, right=5pt, top=10pt, bottom=10pt
+]
+Tugas ini disusun sepenuhnya tanpa bantuan kecerdasan buatan
+(\textit{Generative AI}), melainkan hasil pemikiran dan analisis mandiri.
+
+\vspace{1cm}
+
+\begin{flushright}
+\includegraphics[height=2cm]{assets/ttd.png}\\
+{Nicholas Wise Saragih Sumbayak}
+
+{13524037}
+\end{flushright}
+\end{tcolorbox}
+\end{minipage}
+\end{center}
+
 \end{document}
+
